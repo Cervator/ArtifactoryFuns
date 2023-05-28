@@ -1,0 +1,8 @@
+apiVersion: v2
+name: terasology-artifactory-chart
+version: 7.55.14 # Mapping this to the target Artifactory app version, chart version is in requirements.yaml
+
+dependencies:
+  - name: artifactory-oss
+    version: 107.55.14 # App version 7.55.14 when this was chosen
+    repository: https://charts.jfrog.io
