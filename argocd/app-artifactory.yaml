@@ -1,0 +1,11 @@
+project: default
+source:
+  repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
+  path: artifactory
+  targetRevision: HEAD
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: artifactory
+syncPolicy:
+  syncOptions:
+    - CreateNamespace=true

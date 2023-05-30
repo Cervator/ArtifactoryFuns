@@ -1,0 +1,9 @@
+apiVersion: v2
+name: terasology-ingress-chart
+version: 7.55.14 # Mapping this to the target nginx ingress controller app version
+
+dependencies:
+  - name: ingress-nginx
+    version: 107.55.14 # App version 7.55.14 when this was chosen
+    repository: https://kubernetes.github.io/ingress-nginx
+    # TODO: Add cert-manager here? But don't activate any certs after getting the IP of the controller and associating it with a domain
