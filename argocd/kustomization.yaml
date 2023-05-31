@@ -4,7 +4,9 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-- github.com/argoproj/argo-cd/tree/master/manifests/core-install?ref=v2.7.2
+# Note odd protocol setup - otherwise get arbitrary parsing errors
+- git::https://github.com/argoproj/argo-cd/manifests/core-install?ref=v2.7.2
+
 # - argocd-ingress.yaml
 # - ingress-controller.yaml
 # - artifactory.yaml
