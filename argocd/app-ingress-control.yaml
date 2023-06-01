@@ -1,12 +1,18 @@
-project: default
-source:
-  repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
-  path: ingress-control
-  targetRevision: HEAD
-destination:
-  server: 'https://kubernetes.default.svc'
-  namespace: ingress-control
-syncPolicy:
-  automated: {}
-  syncOptions:
-    - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-control
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
+    path: ingress-control
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ingress-control
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

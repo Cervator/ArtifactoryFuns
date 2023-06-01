@@ -2,7 +2,11 @@
 
 This app is a continuous deployment (CD) tool meant to help deploy other apps.
 
-To initially provision this tool
+To initially provision this tool simply run `kubectl apply -k argocd` in the root directory for this repository. To delete things use `delete` instead of `apply`
+
+The setup of Argo should automatically generate app entries including one for "ingress-control" set to auto-sync, meaning it should apply its resources right away which includes setup of an ingress controller plus cert-manager, including its issuers delayed till the Helm chart itself is done executing to have the right CRDs available.
+
+TODO: After that point ingress should be ready, but the controller's new IP is not yet pointed at a domain to allow routing and certs to work (do not allow ingress definitions to generate certs at this point). Apply the IP to DNS manually then see if it works (some time later?)
 
 ## Approach
 

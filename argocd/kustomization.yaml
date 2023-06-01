@@ -5,9 +5,7 @@ namespace: argocd
 
 resources:
 # Note odd protocol setup - otherwise get arbitrary parsing errors
-- git::https://github.com/argoproj/argo-cd/manifests/core-install?ref=v2.7.2
-- ingress-controller.yaml
+- git::https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.7.2
+- app-ingress-control.yaml
+- app-artifactory.yaml
 - argocd-ingress.yaml
-# - artifactory.yaml
-- certmanager-issuer-staging.yaml
-- certmanager-issuer-prod.yaml
