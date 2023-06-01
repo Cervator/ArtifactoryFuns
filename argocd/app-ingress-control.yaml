@@ -1,11 +1,12 @@
 project: default
 source:
   repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
-  path: ingress-controller
+  path: ingress-control
   targetRevision: HEAD
 destination:
   server: 'https://kubernetes.default.svc'
-  namespace: ingress-controller
+  namespace: ingress-control
 syncPolicy:
+  automated: {}
   syncOptions:
     - CreateNamespace=true

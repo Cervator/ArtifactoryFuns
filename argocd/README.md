@@ -2,7 +2,7 @@
 
 This app is a continuous deployment (CD) tool meant to help deploy other apps.
 
-To initially provision this tool 
+To initially provision this tool
 
 ## Approach
 
@@ -46,12 +46,17 @@ Adding resources here for 2-3 reasons:
 
 ## Steps for after initial setup
 
-When you have a fresh new Argo CD it should come with bunch of stuff preconfigured thanks to the tree of YAML in this repo, you should be able to retrieve the initial admin password by using the Argo CLI which you can install [as per these instructions](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
+When you have a fresh new Argo CD it should come with bunch of stuff preconfigured thanks to the tree of YAML in this repo, you should be able to retrieve the initial admin password either directly as a secret or by using the Argo CLI which you can install [as per the below instructions](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
+
+For the easier secret approach simply execute `kubectl get secrets -n argocd argocd-initial-admin-secret -o yaml`
+
+For the full CLI setup follow these steps, with the last one allowing you to change the admin password (which User Info / Update Password will also let you do in the GUI)
 
 * `curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64`
 * `sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd`
 * `rm argocd-linux-amd64`
 * `argocd admin initial-password -n argocd`
+* `argocd account update-password`
 
 
 
