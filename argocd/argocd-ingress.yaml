@@ -26,5 +26,5 @@ spec:
               name: https
 #  tls:
 #  - hosts:
-#    - argocd.terasology.io
+#    - argocd.aetas-aetherius.com
 #    secretName: argocd-secret # do not change, this is provided by Argo CD

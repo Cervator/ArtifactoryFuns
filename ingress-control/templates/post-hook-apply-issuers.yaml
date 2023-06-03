@@ -41,7 +41,7 @@ spec:
       volumes:
       - name: config-volume1
         configMap:
-        name: cm-certmanager-issuer-staging
+          name: cm-certmanager-issuer-staging
       - name: config-volume2
         configMap:
-        name: cm-certmanager-issuer-prod
+          name: cm-certmanager-issuer-prod
