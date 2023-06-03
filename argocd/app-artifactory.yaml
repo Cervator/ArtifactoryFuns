@@ -9,6 +9,9 @@ spec:
     repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
     path: artifactory
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: artifactory
