@@ -4,8 +4,11 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-# Note odd protocol setup - otherwise get arbitrary parsing errors
-- git::https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.7.2
+# Note odd protocol setup - otherwise get arbitrary parsing errors due to an http/git quirk
+# CRDS first since we later use an Argo CRD, essentially this is cluster-install otherwise
+- git::https://github.com/argoproj/argo-cd/manifests/crds?ref=v2.7.2
+- git::https://github.com/argoproj/argo-cd/manifests/base?ref=v2.7.2
+- git::https://github.com/argoproj/argo-cd/manifests/cluster-rbac?ref=v2.7.2
 - app-ingress-control.yaml
-- app-artifactory.yaml
 - argocd-ingress.yaml
+#- app-artifactory.yaml
