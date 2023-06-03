@@ -10,5 +10,5 @@ resources:
 - git::https://github.com/argoproj/argo-cd/manifests/base?ref=v2.7.2
 - git::https://github.com/argoproj/argo-cd/manifests/cluster-rbac?ref=v2.7.2
 - app-ingress-control.yaml
+- app-argocd.yaml
 - argocd-ingress.yaml
-#- app-artifactory.yaml
