@@ -1,6 +1,6 @@
 artifactory-oss: # This is needed because we end up parenting the "artifactory-oss" chart in our Chart.yaml
     artifactory: # Which in turn parents the "artifactory" chart
-      artifactory: #which in turn has an "artifactory" section. Yay.
+      artifactory: # Which in turn has an "artifactory" section. Yay.
         resources:
           requests:
             memory: "4Gi"

@@ -52,7 +52,7 @@ Adding resources here for 2-3 reasons:
 
 When you have a fresh new Argo CD it should come with bunch of stuff preconfigured thanks to the tree of YAML in this repo, you should be able to retrieve the initial admin password either directly as a secret or by using the Argo CLI which you can install [as per the below instructions](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
 
-For the easier secret approach simply execute `kubectl get secrets -n argocd argocd-initial-admin-secret -o yaml`
+For the easier secret approach simply execute `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 
 For the full CLI setup follow these steps, with the last one allowing you to change the admin password (which User Info / Update Password will also let you do in the GUI)
 
@@ -62,8 +62,12 @@ For the full CLI setup follow these steps, with the last one allowing you to cha
 * `argocd admin initial-password -n argocd`
 * `argocd account update-password`
 
-
-
 ## Later maybes
 
 * There are plenty of plugins and other extensions to Argo CD we could look at. The suggested template `kustomization.yaml` came with a little component section related to https://github.com/argoproj-labs/argocd-extensions which may be worth checking out. Would enable by adding a `components:` block with `- https://github.com/argoproj-labs/argocd-extensions/manifests` in it
+
+## Todos / Troubleshooting
+
+* Either enable insecure https on first pass for Argo itself or accept accessing via https on an insecure cert
+* If the login page just loops back to itself try switching from http to https - the annotations in `argocd-ingress` are likely responsible and may be doable in a nicer up front format
+* Moving the ../crds to the top of Argo's `kustomization.yaml` didn't work - apply those separately first? Or just swap to Helm and use another post-hook to then add the apps?
