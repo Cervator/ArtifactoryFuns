@@ -23,7 +23,7 @@ artifactory-oss: # This is needed because we end up parenting the "artifactory-o
         defaultBackend:
           enabled: false
         hosts:
-          - artifactory.aetas-aetherius.com
+          - artifactory.cmdbee.org
         routerPath: /
         artifactoryPath: /
         className: ""
@@ -43,4 +43,4 @@ artifactory-oss: # This is needed because we end up parenting the "artifactory-o
         tls:
         - secretName: artifactory-tls-secret
           hosts:
-            - artifactory.aetas-aetherius.com
+            - artifactory.cmdbee.org

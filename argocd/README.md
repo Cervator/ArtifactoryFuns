@@ -12,13 +12,7 @@ TODO: After that point ingress should be ready, but the controller's new IP is n
 
 The goal by using Argo CD is having as much config and setup present in this readme's Git repo as possible, with minimal effort needed to maintain or even rebuild our infrastructure as needed.
 
-Argo CD is a Kubernetes-native CD operator meant to help maintain applications hosted within its cluster (or other clusters). It can manage apps in a variety of ways:
-
-### Kustomize
-
-This is an approach now built into the `kubectl` CLI and the suggested approach to manage Argo itself. It relies on a central `kustomization.yaml` file that describes your application, which can involve links to other `kustomization.yaml` files as well as other resource files. You generally configure applications by linking files and editing/replacing chunks of YAML within config files.
-
-### Helm
+Argo CD is a Kubernetes-native CD operator meant to help maintain applications hosted within its cluster (or other clusters). It can manage apps (including itself) in a variety of ways, including _Helm_
 
 Helm is a well-known orchestration tool that relies on charts - template files that can depend on other charts and load values from given files to replace within the chart. You deploy a given chart as a "release" which you can list with `helm ls` (you need to supply a namespace to go beyond the default)
 
@@ -43,10 +37,11 @@ In short: In our Git repo we have a Kustomize app setup for Argo itself, which _
 Adding resources here for 2-3 reasons:
 
 * Finalizing the Argo CD setup (subdomain with https)
-  * TODO: if cert-manager and ingress-controller are not present as Argo initializes will trouble happen or stuff will converge eventually?
 * Establishing a base set of applications managed by Argo (which are themselves simply CRDs applied to Kubernetes)
 * Adding more config for Argo itself (like credentials to get to the right Git repo - which would need a secrets manager or something like transcrypt)
   * There are lots of good examples in the repo that manages Argo's Argo: https://github.com/argoproj/argoproj-deployments/blob/master/argocd/kustomization.yaml
+
+_Update:_ Trying Helm rather than Kustomize to try to apply the CRDs with less hassle. See https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
 
 ## Steps for after initial setup
 
@@ -65,9 +60,9 @@ For the full CLI setup follow these steps, with the last one allowing you to cha
 ## Later maybes
 
 * There are plenty of plugins and other extensions to Argo CD we could look at. The suggested template `kustomization.yaml` came with a little component section related to https://github.com/argoproj-labs/argocd-extensions which may be worth checking out. Would enable by adding a `components:` block with `- https://github.com/argoproj-labs/argocd-extensions/manifests` in it
+* We could also potential _remove_ pieces we do not need - like Dex is an included component dealing with certificates or secrets or something, but does our instance actually use it? Notifications?
 
 ## Todos / Troubleshooting
 
 * Either enable insecure https on first pass for Argo itself or accept accessing via https on an insecure cert
 * If the login page just loops back to itself try switching from http to https - the annotations in `argocd-ingress` are likely responsible and may be doable in a nicer up front format
-* Moving the ../crds to the top of Argo's `kustomization.yaml` didn't work - apply those separately first? Or just swap to Helm and use another post-hook to then add the apps?

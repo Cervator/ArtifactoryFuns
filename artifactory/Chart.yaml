@@ -1,6 +1,6 @@
 apiVersion: v2
 name: terartifactory
-version: 7.55.14 # Mapping this to the target Artifactory app version
+version: 1.0.0
 
 dependencies:
   - name: artifactory-oss

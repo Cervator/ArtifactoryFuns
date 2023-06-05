@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: apply-certmanager-issuer-job
+  name: apply-argoapps-job
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
@@ -25,24 +25,28 @@ spec:
           image: bitnami/kubectl
           volumeMounts:
           - name: config-volume1
-            mountPath: /opt/staging/certmanager-issuer-staging.yaml
-            subPath: certmanager-issuer-staging.yaml
+            mountPath: /opt/cm-app-argocd.yaml
+            subPath: cm-app-argocd.yaml
           - name: config-volume2
-            mountPath: /opt/prod/certmanager-issuer-prod.yaml
-            subPath: certmanager-issuer-prod.yaml
+            mountPath: /opt/cm-app-artifactory.yaml
+            subPath: cm-app-artifactory.yaml
+          - name: config-volume3
+            mountPath: /opt/cm-app-ingress-control.yaml
+            subPath: cm-app-ingress-control.yaml
           command:
             - kubectl
           args:
             - apply
             - -f
-            - /opt/staging/certmanager-issuer-staging.yaml
-            - -f
-            - /opt/prod/certmanager-issuer-prod.yaml
+            - /opt/*.yaml
       restartPolicy: Never
       volumes:
       - name: config-volume1
         configMap:
-          name: cm-certmanager-issuer-staging
+          name: cm-app-argocd
       - name: config-volume2
         configMap:
-          name: cm-certmanager-issuer-prod
+          name: cm-app-artifactory
+      - name: config-volume3
+        configMap:
+          name: cm-app-ingress-control
