@@ -11,7 +11,7 @@ data:
     apiVersion: argoproj.io/v1alpha1
     kind: Application
     metadata:
-      name: app-argocd
+      name: {{ .Release.Name }}-argocd
       namespace: argocd
     spec:
       project: default

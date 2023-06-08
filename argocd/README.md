@@ -14,7 +14,7 @@ The goal by using Argo CD is having as much config and setup present in this rea
 
 Argo CD is a Kubernetes-native CD operator meant to help maintain applications hosted within its cluster (or other clusters). It can manage apps (including itself) in a variety of ways, including _Helm_
 
-Helm is a well-known orchestration tool that relies on charts - template files that can depend on other charts and load values from given files to replace within the chart. You deploy a given chart as a "release" which you can list with `helm ls` (you need to supply a namespace to go beyond the default)
+**Helm** is a well-known orchestration tool that relies on charts - template files that can depend on other charts and load values from given files to replace within the chart. You deploy a given chart as a "release" which you can list with `helm ls` (you need to supply a namespace to go beyond the default)
 
 For an easy way to figure out which values can be supplied run something like `helm show values artifactory-oss --repo https://charts.jfrog.io` - however there are two common gotchas:
 
@@ -25,6 +25,8 @@ For an easy way to figure out which values can be supplied run something like `h
   * The application _inside_ the target chart also has its own version number - sometimes numbers get partially or wholly duplicated between layers
 
 You can also "render" a completed chart showing your values supplied by using `helm template -f "values.yaml" jfrog/artifactory-oss` but you do tend to get a _lot_ of YAML thrown in your face. GUI tooling may be advised, such as https://monokle.io/
+
+Note: The chosen initial Helm release name for the bootstrapping part of the infra setup will be used dynamically later by Argo CD. Other apps have their release name hard coded in their Argo CD application manifest files (the config maps under the templates directory)
 
 ## Manage Argo CD via Argo CD
 
