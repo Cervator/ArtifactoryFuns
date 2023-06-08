@@ -10,7 +10,7 @@
 
 See the individual directories for more technical details on each topic.
 
-1. Kick off the process with `helm install terargo . --namespace argocd` in the "argocd" directory (cd there with a terminal or use something like monokle.io's IDE)
+1. Kick off the process with `helm install terargo . -f values.yaml --namespace argocd --create-namespace` in the "argocd" directory (cd there with a terminal or use something like monokle.io's IDE)
 1. Stuff should spin up, both Argo CD and an initial application "ingress-control" that sets up an ingress controller (and more) - get its IP and apply that to the domain
   * You may have to wait a bit here depending on the mood of DNS replication ...
 1. Verify that `argocd.[yourdomain]` pulls up, optionally log in to validate further (see dedicated readme)

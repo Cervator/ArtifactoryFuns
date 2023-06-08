@@ -38,7 +38,11 @@ spec:
           args:
             - apply
             - -f
-            - /opt/*.yaml
+            - /opt/cm-app-argocd.yaml
+            - -f
+            - /opt/cm-app-artifactory.yaml
+            - -f
+            - /opt/cm-app-ingress-control.yaml
       restartPolicy: Never
       volumes:
       - name: config-volume1
