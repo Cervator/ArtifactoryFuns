@@ -26,7 +26,7 @@ For an easy way to figure out which values can be supplied run something like `h
 
 You can also "render" a completed chart showing your values supplied by using `helm template -f "values.yaml" jfrog/artifactory-oss` but you do tend to get a _lot_ of YAML thrown in your face. GUI tooling may be advised, such as https://monokle.io/
 
-Note: The chosen initial Helm release name for the bootstrapping part of the infra setup will be used dynamically later by Argo CD. Other apps have their release name hard coded in their Argo CD application manifest files (the config maps under the templates directory)
+Note: While Helm is used to both bootstrap Argo CD itself and later manage various applications inside Argo the original Helm install will become orphaned when Argo takes over (Argo actually just uses Helm to render the resource files, but not to install charts) - this can include a name clash so be sure to use "terargo" as the initial release name.
 
 ## Manage Argo CD via Argo CD
 
