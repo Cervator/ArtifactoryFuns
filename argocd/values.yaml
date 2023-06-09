@@ -16,8 +16,6 @@ argo-cd:
               name: GitHub
               config:
                 clientID: 852626461c3a70ed2070
-                clientSecret: $dex.github.clientSecret # Alternatively $<some_K8S_secret>:dex.github.clientSecret
                 clientSecret: ${{ .Values.my-github-oauth-secret.data.github-oath-client-secret }}
-                clientSecret: 5697ce2483154c036b32c43b2c781058ab70a898
                 orgs:
                 - name: CervTest
