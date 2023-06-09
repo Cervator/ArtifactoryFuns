@@ -59,6 +59,30 @@ For the full CLI setup follow these steps, with the last one allowing you to cha
 * `argocd admin initial-password -n argocd`
 * `argocd account update-password`
 
+### Dex
+
+Adding Dex into the mix backed by a GitHub OAuth application takes a few steps.
+
+Register a new GitHub OAuth app and record the client id and client secret.
+
+Create a secret in a file like `github-oauth-secret-do-not-commit.yaml` and enter the following content with a secret value replaced:
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-github-oauth-secret
+  labels:
+    app.kubernetes.io/part-of: argocd
+type: Opaque
+data:
+  my-secret-key: <base64 encoded client secret for OAuth app>
+```
+
+Apply it: `kubectl apply -f github-oauth-secret-do-not-commit.yaml -n argocd`
+
+Enable some additional config to `values.yaml` - see the dex tree in the included file.
+
 ## Later maybes
 
 * There are plenty of plugins and other extensions to Argo CD we could look at. The suggested template `kustomization.yaml` came with a little component section related to https://github.com/argoproj-labs/argocd-extensions which may be worth checking out. Would enable by adding a `components:` block with `- https://github.com/argoproj-labs/argocd-extensions/manifests` in it
