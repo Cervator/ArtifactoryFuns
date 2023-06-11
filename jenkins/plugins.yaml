@@ -1,0 +1,30 @@
+
+Job DSL plugin - powers automagic job creation (possibly could wire in better with JCasC sometime as well?)
+Templating Engine - powers the module mega-builds (centralized Jenkinsfiles and such)
+Javadoc - Well, yeah
+Warnings Next Generation - Tons of post-build analytics - Checkstyle, SpotBugs, etc
+Discord Notifier - Used for the DestSol channel, but nothing else yet. May want to either expand or eliminate
+Copy Artifact - used to copy in the "build harness" for Terasology module builds (files attached like artifacts to the engine jobs)
+Permissive Script Security - we hatesss it, preciousss - but we must have it, so at least make it less painful... avoids some obnoxious security features
+Basic Branch Build Strategies Plugin - allows extra config for when to build things, like tags
+Groovy - for executing system Groovy steps to aid maintenance of Jenkins itself
+https://plugins.jenkins.io/git-forensics/ (used by the engine build)
+https://plugins.jenkins.io/pipeline-gitstatuswrapper/ (used by the module build)
+Thinbackup - for backup and restore to another Jenkins
+Kubernetes
+GitHub Checks
+HTML Publisher
+HTTP Request
+Kubernetes Credentials Provider
+Label Linked Jobs
+Pipeline Utility Steps
+GitHub Authentication
+
+There are more but they end up getting installed as dependencies. Trying to go without the ones below to see ...
+
+
+https://github.com/jenkinsci/startup-trigger-plugin - can be used to run a job on startup, such as one to reconfigure a Kubernetes cloud for build agents each time
+Config File Provider
+Favorite and Autofavorite for Blue Ocean
+Jira, Jira Trigger Plugin, Jira Integration for Blue Ocean
+Theme Manager

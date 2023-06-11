@@ -1,0 +1,24 @@
+jenkins:
+  controller:
+    jenkinsAdminEmail: terasology@gmail.com
+
+    ingress:
+      enabled: true
+      hostName: jenkins.cmdbee.org
+      tls:
+      - hosts:
+        - jenkins.cmdbee.org
+        secretName: jenkins-tls-secret
+      annotations: 
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        kubernetes.io/tls-acme: "true"
+        kubernetes.io/ingress.class: nginx
+
+    #image: "registry/my-jenkins"
+    #tag: "v1.2.3"
+    installPlugins: false
+    JCasC:
+      configScripts:
+        welcome-message: |
+          jenkins:
+            systemMessage: Welcome to the 2020ies!
