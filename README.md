@@ -14,7 +14,7 @@ See the individual directories for more technical details on each topic.
 1. Stuff should spin up in a few minutes, both Argo CD and an initial application "ingress-control" that sets up an ingress controller (and more) - get its IP and apply that to the domain
   * You may have to wait a bit here depending on the mood of DNS replication ...
 1. Verify that `https://argocd.[yourdomain]` pulls up, log in with `admin` to validate further (see dedicated readme) (you'll have to OK an invalid cert - plain http will hit a redirect loop on login)
-  * Get the password with `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d` (works readily within a Google Cloud Shell, less so on Windows)
+  * Get the password with `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo` (works readily within a Google Cloud Shell, less so on Windows)
 1. With the domain confirmed go edit `argocd/templates/argocd-ingress.yaml` and uncomment lines starting with # (not indented) to allow Lets Encrypt to pull a fully valid certificate next try. Commit & push to Git.
   * Naturally if we've already done that this repo won't show those few lines commented out in Git as we are live - see the dedicated readme for details.
 1. Click the button to synchronize Argo CD _inside_ Argo CD - yep it manages itself! You may get funny behavior for a moment as Argo redeploys itself.
