@@ -1,0 +1,7 @@
+jenkins:
+  controller:
+    JCasC:
+      configScripts:
+        welcome-message: |
+          jenkins:
+            systemMessage: Welcome to the 2020ies via JCasC!

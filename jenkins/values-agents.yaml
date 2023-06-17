@@ -1,0 +1,28 @@
+jenkins:
+  agent:
+    # This archetype agent gets used to inherit values but also serves as a standard builder
+    podName: kaniko-precached-jdk11
+    # Note that an additional "terajenkins-jenkins-agent" label gets added everywhere (podLabels thing?)
+    customJenkinsLabels: "kaniko-precached-jdk11 ts-engine ts-module lib heavy light java11"
+    nodeUsageMode: "EXCLUSIVE"
+    sideContainerName: builder
+    image: terasology/jenkins-precached-agent
+    tag: latest-jdk11
+    command: "/bin/sh -c"
+    args: "cat"
+    # This is needed for some reason or the controller refuses to connect this agent?
+    TTYEnabled: true
+    # Set resources for additional agents to inherit
+    resources:
+      requests:
+        cpu: 750m
+        memory: "3072Mi"
+      limits:
+        cpu: 1750m
+        memory: "6144Mi"
+
+  additionalAgents:
+    kanikoEight:
+      podName: kaniko-precached-jdk8
+      customJenkinsLabels: "kaniko-precached-jdk8"
+      tag: latest-jdk8
