@@ -7,6 +7,22 @@ jenkins:
   # Stuff for the main server - see other values files for more specific stuff
   controller:
     jenkinsAdminEmail: terasology@gmail.com
+    numExecutors: 1
+    executorMode: EXCLUSIVE
+    customJenkinsLabels: "main"
+
+    # Pull secrets from Kubernetes and set them as env vars on the pod for JCasC to use later
+    containerEnv:
+      - name: GITHUB_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: jenkins-secrets
+            key: github-client-id
+      - name: GITHUB_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: jenkins-secrets
+            key: github-client-secret
 
     ingress:
       enabled: true

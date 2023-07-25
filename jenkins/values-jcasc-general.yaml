@@ -2,6 +2,13 @@ jenkins:
   controller:
     JCasC:
       configScripts:
-        welcome-message: |
+        general: |
           jenkins:
-            systemMessage: Welcome to the 2020ies via JCasC!
+            systemMessage: Welcome to the 2020ies via JCasC! Now with 20% more JCasC.
+            securityRealm:
+              github:
+                githubWebUri: "https://github.com"
+                githubApiUri: "https://api.github.com"
+                clientID: "${GITHUB_CLIENT_ID}"
+                clientSecret: "${GITHUB_CLIENT_SECRET}"
+                oauthScopes: "read:user,user:email"

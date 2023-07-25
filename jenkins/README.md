@@ -24,6 +24,27 @@ The pinned-list can be generated and maintained by an included "PluginAuditizer"
 * Run the "PluginAuditizer" again and grab the _pinned_ list this time and paste it into `values-plugins.yaml`
 * Re-apply the config (should result in no change but pins to plugins to avoid surprises later)
 
+### JCasC
+
+We use a recommended approach from the official Helm image to [split config-as-code into multiple files](https://github.com/jenkinsci/helm-charts/blob/main/charts/jenkins/README.md#breaking-out-large-config-as-code-scripts) which then originate from multiple Helm values files.
+
+Files with JCasC sections result in files being created at `/var/jenkins_home/casc_configs` in the Jenkins pod, where they are then loaded as multiple sources for config. Each file is named after its arbitrary key before the `|` such as `general.yaml` from the following snippet:
+
+```
+jenkins:
+  controller:
+    JCasC:
+      configScripts:
+        general: |
+          jenkins: ...
+```
+
+#### Gotchas
+
+* You don't want to overlap between non-JCasC and JCasC config for the _same_ setting, as noted in the documentation (for instance indicating the Jenkins URL itself both ways)
+* If you change the arbitrary key for a JCasC snippet Jenkins will happily create a _new_ file under `/var/jenkins_home/casc_configs` - without deleting the _old_ file which still loads with its outdated values, including the potential for clashes! Unsure if there is an easy fix for this other than getting into the file system and deleting the old file directly (or just doing a full wipe but..)
+  * Even though the Jenkins pod's _main_ container will end up in an inaccessible crash state if it fails to start you can cheat and use the sidecar meant to reload jcasc with the following: `kubectl exec -it terajenkins-0 -n jenkins --container config-reload -- /bin/sh` then `cd /var/jenkins_home/casc_configs` to get to the good stuff. Then delete away and retry!
+
 TODO:
 
 * Prep for Argo (make an argocd app yaml including the multiple values files)
