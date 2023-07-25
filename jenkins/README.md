@@ -9,6 +9,10 @@ If debugging for development reasons you can install via Helm CLI manually as we
 
 If the Jenkins pod is stuck on init (especially afte ran update) odds are it tried to install a set of plugins where it got confused about dependencies. Hoping the right Helm config will make it not do that and only explicitly install the pinned set of plugins.
 
+### Initial secrets
+
+For the sake of local development ease you can use the included Helm hook to prepare a secret, just enter the right values as instructed by comments. HOWEVER you do of course not want to commit the actual values, and for on-going maintenance we probably want the secret to not be maintained as part of the chart, at least until using a proper external secrets manager like Vault. For regular operations consider changing the hook resource file to a standard k8s secret, apply it manually, then let Argo handle everything else with the assumption that the secret is available.
+
 ### Plugins
 
 For ease we are simply indicating version-pinned plugins via Helm values file, using a custom image might be _slightly_ more efficient but hardly worth it.
