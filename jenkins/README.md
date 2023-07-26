@@ -1,17 +1,22 @@
+## Jenkins
 
+This directory controls and documents our CI/CD setup within Jenkins. Efforts have been made to automate as much as possible and document all of the things to the best of our ability.
 
-If debugging for development reasons you can install via Helm CLI manually as well as update, rather than let Argo CD. This is easier in a tool like Monokle.io after going to a multi approach for values files.
+Ideally an Argo CD instance is just running everything - see the root readme and the one in the argocd dir. See also the secrets section here first just in case.
+
+### Developing the dev tools
+
+If debugging for development reasons you can work via Helm CLI manually, rather than let Argo CD handle it after a Git push. This can be easier when just changing individual or a few files in a tool like Monokle.io
 
 * helm repo add jenkins https://charts.jenkins.io
-* helm install terajenkins jenkins/jenkins -f values.yaml -n jenkins
-* helm upgrade terajenkins jenkins/jenkins -f values.yaml -n jenkins
+* helm install terajenkins jenkins/jenkins -f values.yaml -f values-agents.yaml -f values-plugins.yaml -f values-jcasc-general.yaml -n jenkins
+  * (or "upgrade" instead of "install")
 * Get initial admin password with `kubectl get secret terajenkins -n jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode && echo`
-
-If the Jenkins pod is stuck on init (especially afte ran update) odds are it tried to install a set of plugins where it got confused about dependencies. Hoping the right Helm config will make it not do that and only explicitly install the pinned set of plugins.
+  * This won't matter if fully provisioning with JCasC already configuring GitHub integration
 
 ### Initial secrets
 
-For the sake of local development ease you can use the included Helm hook to prepare a secret, just enter the right values as instructed by comments. HOWEVER you do of course not want to commit the actual values, and for on-going maintenance we probably want the secret to not be maintained as part of the chart, at least until using a proper external secrets manager like Vault. For regular operations consider changing the hook resource file to a standard k8s secret, apply it manually, then let Argo handle everything else with the assumption that the secret is available.
+For the sake of local development ease you can use the included Helm hook to prepare some secrets, just enter the right values as instructed by comments. HOWEVER you do of course not want to commit the actual values, and for on-going maintenance we probably want the secret to not be maintained as part of the chart, at least until using a proper external secrets manager like Vault. For regular operations consider changing the hook resource file to a standard k8s secret, apply it manually, then let Argo handle everything else with the assumption that the secret is available.
 
 ### Plugins
 
@@ -51,6 +56,10 @@ jenkins:
 * JCasC can be _very_ picky when it comes to parameter lists. A valid config in the UI may produce an "export" JCasC that will not work (as the docs indicate) because some empty field wasn't included in the config snippet.
   * One thing that was missing for GitHub Authorization setup was the "organizationNames" entry - it may well work if left as an empty string rather than undefined (leading to a null, causing param issues?)
 * If working locally with any sort of Helm templating approach followed by deploying individual resources (easy to do in Monokle) be mindful that adding new JCasC keys to a values file may also remove them from the default file - which if not redeployed will clash with the new values. Deploy both or the whole thing if in doubt
+
+### More config
+
+* There is a `content.terasology.io` (or whichever domain) defined for Jenkins as a secondary URL beyond the base jenkins subdomain. This is to help host certain other kinds of content from Jenkins like javadoc. Ingress should spin up automatically as part of our setup, unsure if we need any other toggles or if this even has or will go out of date at some point.
 
 TODO:
 
