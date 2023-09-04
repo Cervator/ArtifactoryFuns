@@ -55,6 +55,7 @@ jenkins:
     kanikoBuilder:
       podName: kaniko
       customJenkinsLabels: "kaniko"
+      sideContainerName: kaniko
       image: "gcr.io/kaniko-project/executor"
       tag: debug
       command: "/busybox/sleep"

@@ -24,7 +24,7 @@ Create a new OAuth application in a place like https://github.com/organizations/
 
 For the sake of local development ease you can use `jenkins-secret-do-not-recomment.yaml` to prepare the secrets for Kubernetes, just enter the right values as instructed by comments. HOWEVER you do of course not want to commit the actual values, and for on-going maintenance we probably want the secret to not be maintained as part of the chart, at least until using a proper external secrets manager like Vault. For regular operations consider changing the hook resource file to a standard k8s secret, apply it manually, then let Argo handle everything else with the assumption that the secret is available.
 
-Note that the secret added there is for OAuth and would live GitHub-side in a place like https://github.com/organizations/Terasology/settings/applications - after setup you also define a GitHub Server within Jenkins config which in pairs with GitHub _Apps_ on all the target organizations on GitHub. Those get added in places like https://github.com/organizations/MovingBlocks/settings/installations
+Note that the secret added there is for OAuth and would live GitHub-side in a place like https://github.com/organizations/Terasology/settings/applications - after setup you also define a GitHub Server within Jenkins config and end up with GitHub apps added in places like https://github.com/organizations/MovingBlocks/settings/installations (see below)
 
 ## GitHub API via GitHub App
 
@@ -60,7 +60,10 @@ The key generated from the GitHub application is included in this repo as `teras
 
 Jenkins has built up a lot of credentials over the years, and all the original instructions are in the https://github.com/MovingBlocks/InfraPlayground repo - for this rejuvenation attempt let us see how few we can get away with:
 
-* GooeyHub the GitHub user - used as our primary robot account for anything automation.
+* (Username with password) `gooey` the Artifactory user (id `artifactory-gooey`)
+* (Username with password) `GooeyHub` the GitHub user - used as our primary robot account for anything automation.
+* (Secret text) GooeyHub again with the personal access token (different credential types may be needed in some contexts)
+* (Username with password) `gooeyhub` on Docker Hub with id `docker-hub-terasology-token`
 
 ## Plugins
 
@@ -100,22 +103,25 @@ jenkins:
 * JCasC can be _very_ picky when it comes to parameter lists. A valid config in the UI may produce an "export" JCasC that will not work (as the docs indicate) because some empty field wasn't included in the config snippet.
   * One thing that was missing for GitHub Authorization setup was the "organizationNames" entry - it may well work if left as an empty string rather than undefined (leading to a null, causing param issues?)
 * If working locally with any sort of Helm templating approach followed by deploying individual resources (easy to do in Monokle) be mindful that adding new JCasC keys to a values file may also remove them from the default file - which if not redeployed will clash with the new values. Deploy both or the whole thing if in doubt
+* If jobs are created via DSL that include system Groovy scripts (able to interact with Jenkins itself at an admin level, so hugely powerful) they'll need to be manually approved under Manage Jenkins once - this is an annoying "security" feature there doesn't appear to be an easy way to greenlight ahead of time despite the Job DSL stuff itself being at the admin-only level and OKed by being written by, well, admins.
+  * The https://github.com/MovingBlocks/JenkinsAgentPrecachedJava/blob/main/Jenkinsfile job seems to provoke this over a simply use of encoding in Groovy and will need manual approval
 
 ## More config
 
 * There is a `content.terasology.io` (or whichever domain) defined for Jenkins as a secondary URL beyond the base jenkins subdomain. This is to help host certain other kinds of content from Jenkins like javadoc. Ingress should spin up automatically as part of our setup, unsure if we need any other toggles or if this even has or will go out of date at some point.
+  * Set **Resource Root URL** to https://content.terasology.io/ under Manage Jenkins / general to enable this within Jenkins
+* In Jenkins main config look for and adjust GitHub API usage from "Normalize API requests" to "Throttle at/near rate limit" (see todo-swap-this.png)
+* Also in Jenkins main config look for "GitHub Servers" and add one, leaving it on defaults (public cloud) and use the GooeyHub PAT secret text credential
+
 
 TODO:
 
-* Prep for Argo (make an argocd app yaml including the multiple values files)
 * Resource allocations (controller)
 * Add the Job DSL jobs including pulling in the PluginAuditizer
-* Add remaining build agents
+* Add remaining build agents - done but not tested
   * Having the instance cap accepted so it will show in the UI hasn't worked so far - but overall cap is OK for now
 * Possible auth via Dex to GitHub and Jenkins RBAC based on GitHub groups
-* Other GitHub setup - we were using an app to do Checks and such
-* Credentials
-* Test an import of the old thin backup and make any plugin/config adjustments
-* Move to jenkins.terasology.io and start running some jobs - config will be there but no artifacts
+* Other GitHub setup - we were using an app to do Checks and such (may just be adding/adjusting a secret)
+* Credentials* Move to jenkins.terasology.io and start running some jobs - config will be there but no artifacts
 * Backup? Sure would be nice to offload artifacts rather than keep them in Jenkins build records, and clean up other cruft like old analytics after a few builds
 * Optimization if needed (fancy Jenkins ran on an SSD storage class)
