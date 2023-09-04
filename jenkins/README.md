@@ -18,13 +18,17 @@ If debugging for development reasons you can work via Helm CLI manually, rather 
 
 Create a new OAuth application in a place like https://github.com/organizations/Terasology/settings/applications and write down the client id and secret.
 
+* Homepage URL should be something like https://jenkins.terasology.io
+* Make sure the Authorization callback URL is something like https://jenkins.terasology.io/securityRealm/finishLogin
+* Description can be anything, like "Jenkins for The Terasology Foundation"
+
 For the sake of local development ease you can use `jenkins-secret-do-not-recomment.yaml` to prepare the secrets for Kubernetes, just enter the right values as instructed by comments. HOWEVER you do of course not want to commit the actual values, and for on-going maintenance we probably want the secret to not be maintained as part of the chart, at least until using a proper external secrets manager like Vault. For regular operations consider changing the hook resource file to a standard k8s secret, apply it manually, then let Argo handle everything else with the assumption that the secret is available.
 
 Note that the secret added there is for OAuth and would live GitHub-side in a place like https://github.com/organizations/Terasology/settings/applications - after setup you also define a GitHub Server within Jenkins config which in pairs with GitHub _Apps_ on all the target organizations on GitHub. Those get added in places like https://github.com/organizations/MovingBlocks/settings/installations
 
 ## GitHub API via GitHub App
 
-Jenkins can have increased access to the GitHub API by authenticating as a _GitHub App._ - and the setup can be reused between Jenkins buiilds, just
+Jenkins can have increased access to the GitHub API by authenticating as a _GitHub App._ - and the setup can be reused between Jenkins buiilds, just may have to generate a new secret on the existing app.
 
 Reference: [GitHub App Authentication Guide][github-app]
 Original issue: [InfraPlayground#19](https://github.com/MovingBlocks/InfraPlayground/issues/19)
