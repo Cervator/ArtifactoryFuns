@@ -58,11 +58,11 @@ jenkins:
       image: gcr.io/kaniko-project/executor
       tag: debug
       command: "/busybox/sleep"
-      args: "infinity"
-        resources:
-          requests:
-            cpu: 256m
-            memory: "4Gi"
-          limits:
-            cpu: 900m
-            memory: "8Gi"
+      args: ["infinity"]
+      resources:
+        requests:
+          cpu: 256m
+          memory: "4Gi"
+        limits:
+          cpu: 900m
+          memory: "8Gi"
