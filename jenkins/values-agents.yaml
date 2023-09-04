@@ -40,7 +40,7 @@ jenkins:
       tag: experimental
 
     pythonBuilder:
-      podName: kubectl-agent-experimental
+      podName: python-agent
       customJenkinsLabels: "python"
       image: terasology/modulesite
       tag: latest
