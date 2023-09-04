@@ -26,12 +26,12 @@ jenkins:
 
     ingress:
       enabled: true
-      hostName: jenkins.cmdbee.org
-      resourceRootUrl: content.cmdbee.org
+      hostName: jenkins.terasology.io
+      resourceRootUrl: content.terasology.io
       tls:
       - hosts:
-        - jenkins.cmdbee.org
-        - content.cmdbee.org
+        - jenkins.terasology.io
+        - content.terasology.io
         secretName: jenkins-tls-secret
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"

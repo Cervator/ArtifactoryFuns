@@ -26,3 +26,43 @@ jenkins:
       podName: kaniko-precached-jdk8
       customJenkinsLabels: "kaniko-precached-jdk8"
       tag: latest-jdk8
+
+    javaNative:
+      podName: java-native
+      customJenkinsLabels: "java-native"
+      image: terasology/java-native-jnlp
+      tag: latest
+
+    kubectl:
+      podName: kubectl-agent-experimental
+      customJenkinsLabels: "java-native"
+      image: cervator/pre-cached-jenkins-agent
+      tag: experimental
+
+    pythonBuilder:
+      podName: kubectl-agent-experimental
+      customJenkinsLabels: "python"
+      image: terasology/modulesite
+      tag: latest
+
+    androidBuilder:
+      podName: android-agent
+      customJenkinsLabels: "android"
+      image: terasology/jenkins-android-agent
+      tag: latest
+
+    # For building other images using Kaniko (the kaniko-something agents are _output_ from such)
+    kanikoBuilder:
+      podName: kaniko
+      customJenkinsLabels: "python"
+      image: gcr.io/kaniko-project/executor
+      tag: debug
+      command: "/busybox/sleep"
+      args: "infinity"
+        resources:
+          requests:
+            cpu: 256m
+            memory: "4Gi"
+          limits:
+            cpu: 900m
+            memory: "8Gi"
