@@ -6,6 +6,13 @@ jenkins:
 
   # Stuff for the main server - see other values files for more specific stuff
   controller:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "2Gi"
+      limits:
+        cpu: "2000m"
+        memory: "6Gi"
     jenkinsAdminEmail: terasology@gmail.com
     numExecutors: 1
     executorMode: EXCLUSIVE
