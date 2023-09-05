@@ -45,4 +45,4 @@ artifactory-oss: # This is needed because we end up parenting the "artifactory-o
         - secretName: artifactory-tls-secret
           hosts:
             #- artifactory.terasology.io
-            - artifactory.cmdbee.org
+            - artifactory.aetas-aetherius.com
