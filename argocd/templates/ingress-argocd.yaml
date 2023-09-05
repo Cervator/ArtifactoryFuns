@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
-    #cert-manager.io/cluster-issuer: letsencrypt-staging
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+#    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     # If you encounter a redirect loop or are getting a 307 response code
@@ -17,7 +17,8 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-  - host: argocd.cmdbee.org
+  #- host: argocd.terasology.io
+  - host: argocd.aetas-aetherius.com
     http:
       paths:
       - path: /
@@ -29,5 +30,6 @@ spec:
               name: https
   tls:
   - hosts:
-    - argocd.cmdbee.org
+    #- argocd.terasology.io
+    - argocd.aetas-aetherius.com
     secretName: argocd-secret # do not change, this is provided by Argo CD
