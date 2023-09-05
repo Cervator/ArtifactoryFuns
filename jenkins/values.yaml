@@ -6,6 +6,9 @@ jenkins:
 
   # Stuff for the main server - see other values files for more specific stuff
   controller:
+    persistence:
+      storageClass: ssd
+      size: 200Gi 
     resources:
       requests:
         cpu: "250m"

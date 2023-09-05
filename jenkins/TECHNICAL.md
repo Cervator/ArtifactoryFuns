@@ -72,3 +72,27 @@ An important part of Job DSL and jobs in general is assigning stuff to the right
 Gradle bits have been included in an attempt to allow recognition of the Groovy DSL for Job DSL - see https://github.com/jenkinsci/job-dsl-plugin/wiki/IDE-Support
 
 Import the Gradle project within this directory and cross your fingers! Introduced via https://github.com/MovingBlocks/InfraPlayground/pull/24
+
+## Kaniko building
+
+To run Docker builds within Jenkins (which spends up build agents using Docker) one approach is using Kaniko and one such agent has been prepared to build our _other_ custom agent images.
+
+Note that to direct execution to the `kaniko` container you need a bit more Jenkinsfile magic:
+
+```groovy
+node("kaniko") {
+    stage('Test Kaniko') {
+        container('kaniko') {
+            stage('Output') {
+                sh '''
+                df -ah
+                ls -la /kaniko
+                /kaniko/executor version
+                '''
+            }
+        }
+    }
+}
+```
+
+Pre-cached Kaniko-based agents are built using https://github.com/MovingBlocks/JenkinsAgentPrecachedJava and have jobs made via DSL in the Utilities folder. See also the https://github.com/MovingBlocks/JenkinsAgentAndroid agent which is a little simpler (no parallel)
