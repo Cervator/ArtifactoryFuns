@@ -26,15 +26,16 @@ Initial setup from scratch takes starting locally with `kubectl` and `helm` alth
 
 ## Steps
 
-See the individual directories for more technical details on each topic - this part covers the very beginning which starts with Argo CD.
+See the individual directories for more technical details on each topic - this part covers the very beginning which starts with Argo CD. You may want to look for any top-level Kubernetes secrets that may be needed for individual apps to get online first (for instance the Jenkins OAuth secret for GitHub logins)
 
 1. Kick off the process with `helm install terargo-argocd . -f values.yaml --namespace argocd --create-namespace` in the "argocd" directory (cd there with a terminal or use something like monokle.io's IDE)
-1. Stuff should spin up in a few minutes, both Argo CD and an initial application "ingress-control" that sets up an ingress controller (and more) - get its IP and apply that to the domain (likely hosted on namecheap.com for Terasology stuff)
-  * You may have to wait a bit here depending on the mood of DNS replication ...
+1. Stuff should spin up in a few minutes, both Argo CD and an initial application "ingress-control" that sets up an ingress controller (and more - there may be a several minute pause between Argo appearing and it acting on ingress stuff) - get its IP and apply that to the domain (likely hosted on namecheap.com for Terasology stuff)
+  * You may have to wait a bit here depending on the mood of DNS replication and/or try in a new browser or incognito mode, maybe after running something like `ipconfig /flushdns`
 1. Verify that `https://argocd.[yourdomain]` pulls up, log in with `admin` to validate further (see dedicated readme) (you'll have to OK an invalid cert - plain http will hit a redirect loop on login)
   * Get the password with `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo` (works readily within a Google Cloud Shell, less so on Windows)
 1. With the domain confirmed go edit `argocd/templates/argocd-ingress.yaml` and comment out the `letsencrypt-staging` line in favor of the `letsencrypt-prod` line to allow Lets Encrypt to pull a fully valid certificate next try. Commit & push to Git.
   * Naturally if we've already done that this repo will show current state not the pristine ready to work from scratch state - if redoing you'll have to swap from prod back to stage first.
+  * Swapping the TLS config between Stage and Prod may go weird if Kubernetes tries to "reuse" part of the secrets. Applying in Argo may be enough to reset this properly?
 1. Click the button to synchronize Argo CD _inside_ Argo CD - yep it manages itself! You may get funny behavior for a moment as Argo redeploys itself.
   * Note that the Argo app for Argo itself may show as out of sync even before updating Git - when the app is established an extra k8s label may be affixed to the related resources
 1. Sync other apps as desired, such as Artifactory - other apps should already be configured to start with production-level Lets Encrypt, you only need the extra step the first time (with Argo)
