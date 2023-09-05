@@ -14,18 +14,7 @@ If debugging for development reasons you can work via Helm CLI manually, rather 
 
 ## SSD storage
 
-Jenkins works best on SSD, even the controller, especially when it comes to dealing with lots of little files involved in analytics uploading and so forth. In the Cloudbees Core Jenkins days we ran that way but may not really need it anymore. The way the extra storage class was set up (which may or may be needed anymore) was by applying the following Kubernetes resource to a GKE cluster:
-
-```
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: ssd
-provisioner: kubernetes.io/gce-pd
-allowVolumeExpansion: true
-parameters:
-  type: pd-ssd
-```
+Jenkins works best on SSD, even the controller, especially when it comes to dealing with lots of little files involved in analytics uploading and so forth. An extra storage class is set up via pre-install Helm hook in `pre-install-ssd-storage-class.yaml` and that in turn is used in the main `values.yaml`
 
 ## JCasC
 
