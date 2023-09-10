@@ -16,7 +16,7 @@ data:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/Cervator/ArtifactoryFuns.git'
+        repoURL: 'https://github.com/MovingBlocks/Logistics.git'
         path: jenkins
         targetRevision: HEAD
         helm:

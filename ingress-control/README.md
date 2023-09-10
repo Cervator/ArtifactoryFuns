@@ -1,10 +1,5 @@
 This directory holds an Argo CD app meant to run an ingress controller and an associated cert manager instance.
 
-TODO: Where do we set a Helm release name, especially for a chart with multiple sub-charts? Is it literally the same as the chart name in that case?
-
-
-
-
 ## Troubleshooting tips
 
 * You can preview Kubernetes YAML in a variety of ways, for instance via monokle.io's IDE or with `helm template` which can also immediately target upstream public charts like the following:

@@ -37,16 +37,12 @@ jenkins:
 
     ingress:
       enabled: true
-      #hostName: jenkins.terasology.io
-      hostName: jenkins.aetas-aetherius.com
-      #resourceRootUrl: content.terasology.io
-      resourceRootUrl: content.aetas-aetherius.com
+      hostName: jenkins.terasology.io
+      resourceRootUrl: content.terasology.io
       tls:
       - hosts:
-        - jenkins.aetas-aetherius.com
-        - content.aetas-aetherius.com 
-        #- jenkins.terasology.io
-        #- content.terasology.io
+        - jenkins.terasology.io
+        - content.terasology.io
         secretName: jenkins-tls-secret
       annotations:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
