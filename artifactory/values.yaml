@@ -1,8 +1,5 @@
 artifactory-oss: # This is needed because we end up parenting the "artifactory-oss" chart in our Chart.yaml
     artifactory: # Which in turn parents the "artifactory" chart
-      systemYamlOverride:
-        existingSecret: artifactory-secrets
-        dataKey: postgres-password
       artifactory: # Which in turn has an "artifactory" section. Yay.
         resources:
           requests:
@@ -17,6 +14,7 @@ artifactory-oss: # This is needed because we end up parenting the "artifactory-o
         persistence:
           size: 100Gi # Main filestore goes here, default was only 20 Gi
       postgresql:
+        postgresqlPassword: artifactoryDBpass1! # Been oddly awkward trying to hide this but the DB is internal anyway so ...
         persistence:
           size: 20Gi # Default was a bizzare 200 Gi
       nginx:
